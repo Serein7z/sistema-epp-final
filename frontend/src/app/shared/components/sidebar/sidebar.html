@@ -1,0 +1,65 @@
+<aside class="sidebar glass">
+  <div class="marca">
+    <div class="marca-fila">
+      <div class="marca-logo">
+        <span class="marca-logo-texto">CheckSafe</span>
+        <span class="marca-logo-acento"></span>
+      </div>
+      <button type="button" class="toggle-tema" (click)="alternarTema()" aria-label="Cambiar tema">
+        <i class="bx" [class.bx-moon]="temaOscuro" [class.bx-sun]="!temaOscuro"></i>
+      </button>
+    </div>
+    <span class="marca-subtitulo">Control industrial</span>
+  </div>
+
+  <div class="seccion-titulo">Panel</div>
+  <nav class="nav">
+    <a routerLink="/dashboard" routerLinkActive="activo" class="nav-item">
+      <span class="nav-punto"></span>
+      Resumen general
+    </a>
+  </nav>
+
+  <div class="seccion-titulo">Inventario</div>
+  <nav class="nav">
+    @for (recurso of recursos; track recurso.path) {
+      <a
+        [routerLink]="['/recursos', recurso.path]"
+        routerLinkActive="activo"
+        class="nav-item">
+        <span class="nav-sigla">{{ recurso.singular.slice(0, 2).toUpperCase() }}</span>
+        <span class="nav-label">
+          <strong>{{ recurso.titulo }}</strong>
+          <small>{{ recurso.descripcion }}</small>
+        </span>
+        <span class="nav-conteo">{{ (conteos$ | async)?.[recurso.path] ?? 0 }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="seccion-titulo" *ngIf="esAdmin">Administración</div>
+  <nav class="nav" *ngIf="esAdmin">
+    <a routerLink="/usuarios" routerLinkActive="activo" class="nav-item">
+      <span class="nav-sigla"><i class="bx bx-user-circle"></i></span>
+      <span class="nav-label">
+        <strong>Usuarios</strong>
+        <small>Cuentas del sistema</small>
+      </span>
+    </a>
+  </nav>
+
+  <div class="usuario-box" *ngIf="sesion$ | async as sesion">
+    <div class="usuario-avatar">{{ sesion.username.slice(0, 1).toUpperCase() }}</div>
+    <div class="usuario-datos">
+      <strong>{{ sesion.username }}</strong>
+      <span class="rol-chip" [class.rol-admin]="sesion.rol === 'ADMIN'">{{ sesion.rol }}</span>
+    </div>
+    <button class="salir-btn" (click)="cerrarSesion()" title="Cerrar sesión">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+    </button>
+  </div>
+</aside>

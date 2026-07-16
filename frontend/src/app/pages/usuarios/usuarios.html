@@ -1,0 +1,88 @@
+<div class="encabezado-lista">
+  <div>
+    <span class="etiqueta">Administración</span>
+    <h1>Usuarios</h1>
+    <p>Cuentas del sistema — {{ usuarios.length }} registro{{ usuarios.length !== 1 ? 's' : '' }}</p>
+  </div>
+</div>
+
+<app-loader *ngIf="cargando" mensaje="Cargando usuarios..."></app-loader>
+
+<ng-container *ngIf="!cargando">
+  <div class="tabla-wrap glass" *ngIf="usuarios.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (usuario of usuarios; track usuario.id) {
+          <tr class="fila">
+            <td class="col-id">#{{ usuario.id }}</td>
+            <td>{{ usuario.username }}</td>
+            <td>
+              <span class="badge" [class.badge-en-uso]="usuario.rol === 'ADMIN'" [class.badge-default]="usuario.rol !== 'ADMIN'">
+                {{ usuario.rol }}
+              </span>
+            </td>
+            <td class="col-acciones">
+              <button class="accion-btn" title="Cambiar contraseña" (click)="abrirCambioPassword(usuario)">
+                <i class="bx bx-lock-alt"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<div class="modal-overlay" *ngIf="usuarioEditando" (click)="cerrarPanel()">
+  <div class="modal-caja" (click)="$event.stopPropagation()">
+    <button type="button" class="modal-cerrar" (click)="cerrarPanel()" aria-label="Cerrar">
+      <i class="bx bx-x"></i>
+    </button>
+
+    <div class="modal-header">
+      <div class="modal-icono">
+        <i class="bx bx-lock-alt"></i>
+      </div>
+      <div>
+        <h3>Cambiar contraseña</h3>
+        <p>Nueva contraseña para <strong>{{ usuarioEditando.username }}</strong></p>
+      </div>
+    </div>
+
+    <form class="password-form" (ngSubmit)="guardarPassword()">
+      <label class="campo">
+        <span>Nueva contraseña</span>
+        <div class="campo-input">
+          <i class="bx bx-key campo-icono"></i>
+          <input type="password" [(ngModel)]="nuevaPassword" name="nuevaPassword" autocomplete="new-password" />
+        </div>
+      </label>
+
+      <label class="campo">
+        <span>Confirmar contraseña</span>
+        <div class="campo-input">
+          <i class="bx bx-key campo-icono"></i>
+          <input type="password" [(ngModel)]="confirmarPassword" name="confirmarPassword" autocomplete="new-password" />
+        </div>
+      </label>
+
+      <p class="form-error" *ngIf="errorForm">{{ errorForm }}</p>
+
+      <div class="modal-acciones">
+        <button type="button" class="btn-secundario" (click)="cerrarPanel()">Cancelar</button>
+        <button type="submit" class="btn-primario" [disabled]="guardando">
+          <span *ngIf="!guardando">Guardar</span>
+          <span *ngIf="guardando" class="mini-spin"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="login-escenario" [class.saliendo]="saliendo">
+  <div class="login-panel-form">
+    <button type="button" class="toggle-tema" (click)="alternarTema()" aria-label="Cambiar tema">
+      <i class="bx" [class.bx-moon]="temaOscuro" [class.bx-sun]="!temaOscuro"></i>
+    </button>
+
+    <div class="login-form-wrap">
+      <div class="login-marca">
+        <div class="login-logo">
+          <span class="login-logo-texto">CheckSafe</span>
+          <span class="login-logo-acento"></span>
+        </div>
+        <p>Inicia sesión en tu cuenta</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="enviar()" class="login-form">
+        <label class="campo">
+          <span>Usuario</span>
+          <div class="campo-input">
+            <i class="bx bx-user campo-icono"></i>
+            <input
+              type="text"
+              formControlName="username"
+              placeholder="admin"
+              autocomplete="username" />
+          </div>
+        </label>
+
+        <label class="campo">
+          <span>Contraseña</span>
+          <div class="campo-input">
+            <i class="bx bx-lock-alt campo-icono"></i>
+            <input
+              [type]="mostrarPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••"
+              autocomplete="current-password" />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="mostrarPassword = !mostrarPassword"
+              aria-label="Mostrar u ocultar contraseña">
+              <i class="bx" [class.bx-hide]="mostrarPassword" [class.bx-show]="!mostrarPassword"></i>
+            </button>
+          </div>
+        </label>
+
+        <div class="campo-opciones">
+          <label class="recordar">
+            <input type="checkbox" formControlName="recordar" />
+            <span>Recordar sesión</span>
+          </label>
+          <a href="javascript:void(0)" class="recuperar">Recuperar acceso</a>
+        </div>
+
+        <p class="login-error" *ngIf="errorLogin">{{ errorLogin }}</p>
+
+        <button type="submit" class="btn-primario" [disabled]="cargando">
+          <span *ngIf="!cargando">Iniciar Sesión</span>
+          <span *ngIf="cargando" class="mini-spin"></span>
+        </button>
+      </form>
+
+      <p class="login-footer">© 2026 CheckSafe — Todos los derechos reservados</p>
+    </div>
+  </div>
+
+  <div class="login-panel-marca">
+    <div class="marca-fondo">
+      <span class="blob" *ngFor="let b of blobs" [style.top]="b.top" [style.left]="b.left"></span>
+
+      <div class="orbitas">
+        <div class="orbita orbita-1">
+          <span class="particula"></span>
+        </div>
+        <div class="orbita orbita-2">
+          <span class="particula"></span>
+          <span class="particula particula-2"></span>
+        </div>
+        <div class="orbita orbita-3">
+          <span class="particula"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="marca-contenido">
+      <div class="marca-logo">
+        <span class="marca-logo-texto">CheckSafe</span>
+        <span class="marca-logo-acento"></span>
+      </div>
+      <p>Gestiona tus equipos de protección personal de manera inteligente y eficiente</p>
+    </div>
+  </div>
+</div>

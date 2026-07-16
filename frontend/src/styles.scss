@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import 'notiflix/dist/notiflix-3.2.8.min.css';
+
+:root {
+  --bg-base: #0b0f14;
+  --bg-panel: #121822;
+  --bg-panel-2: #171f2c;
+  --bg-elevated: #1c2531;
+  --border-soft: rgba(148, 175, 209, 0.14);
+  --border-strong: rgba(148, 175, 209, 0.28);
+
+  --accent: #10b981;
+  --accent-soft: rgba(16, 185, 129, 0.16);
+  --accent-glow: rgba(16, 185, 129, 0.35);
+  --accent-2: #34d399;
+
+  --text-primary: #eaf1fb;
+  --text-secondary: #92a3ba;
+  --text-dim: #5e6d82;
+
+  --ok: #34d399;
+  --ok-soft: rgba(52, 211, 153, 0.14);
+  --warn: #fbbf5c;
+  --warn-soft: rgba(251, 191, 92, 0.14);
+  --danger: #f2637a;
+  --danger-soft: rgba(242, 99, 122, 0.14);
+  --neutral: #8b9bb4;
+  --neutral-soft: rgba(139, 155, 180, 0.14);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-card: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
+  --shadow-panel: -18px 0 40px -10px rgba(0, 0, 0, 0.6);
+
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+:root[data-tema='light'] {
+  --bg-base: #f4f7fb;
+  --bg-panel: #ffffff;
+  --bg-panel-2: #f0f3f8;
+  --bg-elevated: #ffffff;
+  --border-soft: rgba(31, 45, 66, 0.1);
+  --border-strong: rgba(31, 45, 66, 0.2);
+
+  --text-primary: #14202f;
+  --text-secondary: #4b5b70;
+  --text-dim: #8593a6;
+
+  --shadow-card: 0 20px 45px -12px rgba(20, 32, 47, 0.22), 0 4px 12px -4px rgba(20, 32, 47, 0.12);
+  --shadow-panel: -18px 0 40px -14px rgba(20, 32, 47, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(16, 185, 129, 0.10), transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(52, 211, 153, 0.07), transparent 45%),
+    var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 20px;
+}
+
+.glass {
+  background: rgba(23, 31, 44, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-soft);
+}
+
+:root[data-tema='light'] .glass {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+
+// ---------- Notiflix: adaptado a la paleta del proyecto ----------
+
+.notiflix-notify {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  p {
+    font-family: var(--font-body) !important;
+  }
+}
+
+.checksafe-toast-exito,
+.checksafe-toast-info {
+  border-left: 3px solid var(--accent);
+}
+
+.checksafe-toast-error {
+  border-left: 3px solid var(--danger);
+}
+
+// ---------- Modal centrado: usado por formularios y confirmaciones ----------
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 32, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  animation: fade-in 0.2s ease;
+}
+
+.modal-caja {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  padding: 32px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-card);
+  animation: fade-up 0.25s ease;
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-right: 24px;
+
+  h3 { font-size: 17px; margin-bottom: 4px; }
+  p {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+
+    strong { color: var(--text-primary); }
+  }
+}
+
+.modal-etiqueta {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.modal-icono {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  box-shadow: 0 8px 18px -6px var(--accent-glow);
+}
+
+.modal-icono-danger {
+  background: linear-gradient(140deg, var(--danger), #c9435a);
+  box-shadow: 0 8px 18px -6px rgba(242, 99, 122, 0.35);
+}
+
+.modal-acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}

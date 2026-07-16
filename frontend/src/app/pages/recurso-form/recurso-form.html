@@ -1,0 +1,62 @@
+<div class="modal-overlay" *ngIf="abierto" (click)="cerrar()">
+  <div class="modal-caja" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="form">
+      <button type="button" class="modal-cerrar" (click)="cerrar()" aria-label="Cerrar">
+        <i class="bx bx-x"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-icono">
+          <i class="bx" [class.bx-edit]="esEdicion" [class.bx-plus]="!esEdicion"></i>
+        </div>
+        <div>
+          <span class="modal-etiqueta">{{ esEdicion ? 'Editar registro' : 'Nuevo registro' }}</span>
+          <h3>{{ config.singular }}</h3>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="enviar()" class="modal-form">
+        @for (campo of config.campos; track campo.key) {
+          <label class="campo">
+            <span>{{ campo.label }}</span>
+            <input
+              [type]="campo.tipo"
+              [formControlName]="campo.key"
+              [placeholder]="campo.placeholder ?? ''" />
+            @if (form.get(campo.key)?.invalid && form.get(campo.key)?.touched) {
+              <small class="campo-error">Este campo es obligatorio</small>
+            }
+          </label>
+        }
+
+        <label class="campo">
+          <span>Estado</span>
+          <select formControlName="estado">
+            @for (estado of estados; track estado) {
+              <option [value]="estado">{{ estado }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="campo">
+          <span>Observación</span>
+          <textarea
+            formControlName="observacion"
+            rows="3"
+            placeholder="Detalle, responsable, área asignada..."></textarea>
+          @if (form.get('observacion')?.invalid && form.get('observacion')?.touched) {
+            <small class="campo-error">Obligatorio, máximo 140 caracteres</small>
+          }
+        </label>
+
+        <div class="modal-acciones">
+          <button type="button" class="btn-secundario" (click)="cerrar()">Cancelar</button>
+          <button type="submit" class="btn-primario" [disabled]="guardando">
+            <span *ngIf="!guardando">{{ esEdicion ? 'Guardar cambios' : 'Agregar' }}</span>
+            <span *ngIf="guardando" class="mini-spin"></span>
+          </button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="encabezado" *ngIf="sesion$ | async as sesion">
+  <div>
+    <span class="etiqueta">Panel general</span>
+    <h1>Dashboard Industrial</h1>
+    <p>Control de Equipos de Protección Personal — sesión de {{ sesion.username }}</p>
+  </div>
+</div>
+
+<app-loader *ngIf="cargando" mensaje="Consultando inventario en el backend..."></app-loader>
+
+<ng-container *ngIf="!cargando">
+  <div class="resumen-top">
+    <div class="resumen-chip">
+      <span>Total de equipos registrados</span>
+      <strong>{{ totalGeneral }}</strong>
+    </div>
+    <div class="resumen-chip" [class.alerta]="totalDanados > 0">
+      <span>Equipos dañados</span>
+      <strong>{{ totalDanados }}</strong>
+    </div>
+  </div>
+
+  <div class="panel-grafico glass">
+    <div class="panel-grafico-encabezado">
+      <h3>Total de equipos por módulo</h3>
+      <span>Comparativo general del inventario</span>
+    </div>
+    <div class="panel-grafico-lienzo">
+      <app-mini-chart tipo="bar" [etiquetas]="etiquetasChart" [valores]="valoresChart"></app-mini-chart>
+    </div>
+  </div>
+
+  <div class="grilla-tarjetas">
+    @for (t of tarjetas; track t.config.path; let i = $index) {
+      <a
+        [routerLink]="['/recursos', t.config.path]"
+        class="tarjeta"
+        [style.animation-delay.ms]="i * 60">
+        <div class="tarjeta-top">
+          <span class="tarjeta-sigla">{{ t.config.singular.slice(0, 2).toUpperCase() }}</span>
+          <span class="tarjeta-total">{{ t.total }}</span>
+        </div>
+        <h3>{{ t.config.titulo }}</h3>
+        <p class="tarjeta-desc">{{ t.config.descripcion }}</p>
+
+        <div class="tarjeta-barra">
+          <div class="barra-fondo">
+            <div
+              class="barra-relleno"
+              [style.width.%]="t.total ? (t.enUso / t.total) * 100 : 0"></div>
+          </div>
+          <span>{{ t.enUso }} en uso</span>
+        </div>
+
+        <div class="tarjeta-danio" *ngIf="t.danados > 0">
+          {{ t.danados }} dañado{{ t.danados > 1 ? 's' : '' }}
+        </div>
+      </a>
+    }
+  </div>
+</ng-container>
