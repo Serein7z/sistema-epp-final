@@ -53,8 +53,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of(
             "http://localhost:4200",
-            "https://tu-proyecto.vercel.app",
-            "https://tu-proyecto-*.vercel.app"
+            "https://sistema-epp-final.vercel.app",
+            "https://*.vercel.app"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
